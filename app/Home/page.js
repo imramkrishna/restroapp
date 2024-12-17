@@ -7,7 +7,7 @@ function page() {
 
             {/* ============================Setting up Reservation block=============================*/}
 
-            <div className='flex flex-col min-w-full md:flex-row md:max-w-md overflow-auto'>
+            <div className='flex flex-col min-w-full md:flex-row md:max-w-md overflow-auto md:mx-5'>
 
                 <div className="reservation overflow-auto md:h-96 md:w-1/4 rounded-2xl border-2">
                     <h3 className='font-bold text-xl p-2'>Reservations</h3>
