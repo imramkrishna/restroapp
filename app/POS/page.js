@@ -2,7 +2,7 @@ import React from 'react'
 
 function page() {
   return (
-    <div className='mx-72'>
+    <div>
       I am POS
     </div>
   )

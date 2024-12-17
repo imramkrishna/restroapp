@@ -38,7 +38,7 @@ function page() {
 
 
 
-                <div className="top-selling-items rounded-2xl border-2 overflow-auto md:w-1/4 md:mx-10 md:">
+                <div className="top-selling-items my-3 rounded-2xl border-2 overflow-auto md:w-1/4 md:mx-10 md:">
                     <h3 className='md:m-5 font-extrabold text-xl'>Top Selling Items</h3>
                     <div className="items flex justify-between mx-5">
                         <ul>
