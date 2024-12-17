@@ -1,14 +1,18 @@
 "use client"
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 function Navbar() {
     const [dropdown, setDropdown] = useState(false);
+    const [searchdropdown,setsearchdropdown]=useState(false);
 
     const profiledropdown = () => {
         setDropdown(!dropdown);
+    };
+    const finddropdown = () => {
+        setsearchdropdown(!searchdropdown);
     };
 
     return (
@@ -64,13 +68,25 @@ function Navbar() {
 
                 {/* =============================HORIZONTAL NAVBAR========================== */}
                 <div className="mx-36 md:mx-72 h-14 bg-white border-b-2 border-black flex md:justify-between">
-                    <div className="search py-3">
-                        <input className='rounded-full h-9 bg-slate-200 w-60' type="text" placeholder="     Search.." />
+                    <div className="search py-3 mx-3" onClick={finddropdown}>
+                        <input className='rounded-full h-9 bg-slate-200 w-60' type="text" placeholder="     Search.."/>
+                        {searchdropdown && (
+                                    <div className="dropdown-menu bg-white shadow-lg rounded-lg mt-2 absolute w-64">
+                                        <div className="dropdown-item px-4 py-2">Dashboard</div>
+                                        <div className="dropdown-item px-4 py-2">Kitchen</div>
+                                        <div className="dropdown-item px-4 py-2">POS</div>
+                                        <div className="dropdown-item px-4 py-2">Orders</div>
+                                        <div className="dropdown-item px-4 py-2">Reservation</div>
+                                        <div className="dropdown-item px-4 py-2">Customer</div>
+                                        <div className="dropdown-item px-4 py-2">Invoices</div>
+                                        <div className="dropdown-item px-4 py-2">Feedbacks</div>
+                                    </div>
+                                )}
                     </div>
                     <div className="bg-slate-200 rounded-full h-12 my-1">
                         <div className="flex">
                             <FontAwesomeIcon className='border-4 rounded-full h-9 w-7' icon={faUser} />
-                            <span className='py-3 px-1' onClick={profiledropdown}>
+                            <span className='py-3 px-1' onClick={profiledropdown} >
                                 UserName
                                 {dropdown && (
                                     <div className="dropdown-menu bg-white shadow-lg rounded-lg mt-2 absolute">
