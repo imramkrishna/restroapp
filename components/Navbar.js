@@ -14,7 +14,7 @@ function Navbar() {
     return (
         <>
             <nav>
-                <div className='bg-slate-300 min-h-screen max-w-72 fixed'>
+                <div className='bg-slate-100 min-h-screen max-w-72 fixed'>
                     <div className="navcontent p-7">
                         {/* ==================Restro Pro logo setting=================== */}
                         <div className='font-bold px-7 text-4xl m-auto font-sans'>
