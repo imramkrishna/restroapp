@@ -24,7 +24,7 @@ function page() {
       setTotalPrice(TotalPrice + price);
     }
   };
-  
+
   const incrementQuantity = (name, price) => {
     setQuantities({ ...quantities, [name]: quantities[name] + 1 });
     setTotalPrice(TotalPrice + price);
@@ -38,13 +38,29 @@ function page() {
   };
 
   const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.text("Bill Summary", 10, 10);
-    items.forEach((item, index) => {
-      doc.text(`${index + 1}. ${item.name} x ${quantities[item.name]} = ${item.price * quantities[item.name]}`, 10, 20 + (index * 10));
-    });
+    if (items.length === 0) {
+      alert("Please add items to the bill before generating the receipt.");
+      return;
+    }
+    
+      const doc = new jsPDF();
+      doc.text("Bill Summary", 10, 10);
+      items.forEach((item, index) => {
+
+        doc.text(`${index + 1}. ${item.name} x ${quantities[item.name]} = ${item.price * quantities[item.name]}`, 10, 20 + (index * 10));
+      });
     doc.text(`Total Price: ${TotalPrice}`, 10, 20 + (items.length * 10));
     doc.save("bill.pdf");
+  };
+
+  const deleteItem = (name, price) => {
+    const newItems = items.filter(item => item.name !== name);
+    const itemQuantity = quantities[name];
+    setitems(newItems);
+    setTotalPrice(TotalPrice - (price * itemQuantity));
+    const newQuantities = { ...quantities };
+    delete newQuantities[name];
+    setQuantities(newQuantities);
   };
 
   return (
@@ -144,10 +160,11 @@ function page() {
               <div key={index} className="item flex justify-around my-3 border-2 h-1/6 border-e-slate-100">
 
                 <p>{index + 1}.{item.name}x {quantities[item.name]}</p>
-                <p>{item.price*quantities[item.name]}</p>
+                <p>{item.price * quantities[item.name]}</p>
                 <div className="flex justify-center mt-2">
                   <button className="h-9 mx-3 bg-blue-500 text-white rounded px-2" onClick={() => incrementQuantity(item.name, item.price)}>+</button>
-                  <button className="h-9 mx-3 bg-red-500 text-white rounded px-2" onClick={()=>decrementQuantity(item.name, item.price)} >-</button>
+                  <button className="h-9 mx-3 bg-red-500 text-white rounded px-2" onClick={() => decrementQuantity(item.name, item.price)} >-</button>
+                  <button className="h-9 mx-3 bg-red-700 text-white rounded px-2" onClick={() => deleteItem(item.name, item.price)}>Remove</button>
                 </div>
               </div>
 
