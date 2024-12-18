@@ -3,11 +3,11 @@ import React from 'react'
 function page() {
     return (
         <>
-            <h1 className='font-sans font-bold text-2xl md:p-3'>Dashboard</h1>
+            <h1 className='font-sans font-bold text-2xl p-3'>Dashboard</h1>
 
             {/* ============================Setting up Reservation block=============================*/}
 
-            <div className='flex flex-col min-w-full md:flex-row md:max-w-md overflow-auto md:mx-5'>
+            <div className='flex flex-col min-w-full md:flex-row md:max-w-md md:mx-5'>
 
                 <div className="reservation overflow-auto md:h-96 md:w-1/4 rounded-2xl border-2">
                     <h3 className='font-bold text-xl p-2'>Reservations</h3>
@@ -38,7 +38,7 @@ function page() {
 
 
 
-                <div className="top-selling-items my-3 rounded-2xl border-2 overflow-auto md:w-1/4 md:mx-10 md:">
+                <div className="top-selling-items rounded-2xl border-2 overflow-auto md:w-1/4 md:h-96 md:mx-10 md:">
                     <h3 className='md:m-5 font-extrabold text-xl'>Top Selling Items</h3>
                     <div className="items flex justify-between mx-5">
                         <ul>

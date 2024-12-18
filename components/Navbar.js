@@ -67,9 +67,9 @@ function Navbar() {
                 </div>
 
                 {/* =============================HORIZONTAL NAVBAR========================== */}
-                <div className="mx-36 md:mx-72 h-14 bg-white border-b-2 border-black flex md:justify-between">
+                <div className="max-w-full mx-36 md:mx-72 h-14 bg-white border-b-2 border-e-white flex md:justify-between">
                     <div className="search py-3 mx-3" onClick={finddropdown}>
-                        <input className='rounded-full h-9 bg-slate-200 w-60' type="text" placeholder="     Search.."/>
+                        <input className='rounded-full h-9 bg-slate-200 w-60' type="text" placeholder="     Search.." value="   Search"/>
                         {searchdropdown && (
                                     <div className="dropdown-menu bg-white shadow-lg rounded-lg mt-2 absolute w-64">
                                         <div className="dropdown-item px-4 py-2">Dashboard</div>
@@ -83,10 +83,10 @@ function Navbar() {
                                     </div>
                                 )}
                     </div>
-                    <div className="bg-slate-200 rounded-full h-12 my-1">
+                    <div className="bg-slate-200 rounded-full h-9 my-2">
                         <div className="flex">
-                            <FontAwesomeIcon className='border-4 rounded-full h-9 w-7' icon={faUser} />
-                            <span className='py-3 px-1' onClick={profiledropdown} >
+                            <FontAwesomeIcon className='border-4 rounded-full h-6 w-6' icon={faUser} />
+                            <span className='py-1 px-1' onClick={profiledropdown} >
                                 UserName
                                 {dropdown && (
                                     <div className="dropdown-menu bg-white shadow-lg rounded-lg mt-2 absolute">
