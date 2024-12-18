@@ -108,7 +108,7 @@ function page() {
 
                     </div>
                     <div className="orders h-1/3 border-2 rounded-2xl md:my-3">
-                        <p className='md:mx-6 font-semibold '>New Registered Customers</p>
+                        <p className='md:mx-6 font-semibold md:my-5'>New Registered Customers</p>
                         <span className='md:mx-7 font-extrabold text-4xl'>18</span>
 
 
@@ -126,7 +126,7 @@ function page() {
             {/* ============================Setting up Reports block=============================*/}
 
 
-            <div className="reports my-14 h-24 w-1/4 border-2 rounded-2xl">
+            <div className="reports my-14 h-24 w-1/4 border-2 rounded-2xl mx-7">
                 <p className='my-5 mx-3'>View More data in Reports </p>
             </div>
 

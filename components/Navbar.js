@@ -72,14 +72,14 @@ function Navbar() {
                         <input className='rounded-full h-9 bg-slate-200 w-60' type="text" placeholder="     Search.." value="   Search"/>
                         {searchdropdown && (
                                     <div className="dropdown-menu bg-white shadow-lg rounded-lg mt-2 absolute w-64">
-                                        <div className="dropdown-item px-4 py-2">Dashboard</div>
-                                        <div className="dropdown-item px-4 py-2">Kitchen</div>
-                                        <div className="dropdown-item px-4 py-2">POS</div>
-                                        <div className="dropdown-item px-4 py-2">Orders</div>
-                                        <div className="dropdown-item px-4 py-2">Reservation</div>
-                                        <div className="dropdown-item px-4 py-2">Customer</div>
-                                        <div className="dropdown-item px-4 py-2">Invoices</div>
-                                        <div className="dropdown-item px-4 py-2">Feedbacks</div>
+                                        <Link href="/Home"><div className="dropdown-item px-4 py-2">Dashboard</div></Link>
+                                        <Link href="/Kitchen"><div className="dropdown-item px-4 py-2">Kitchen</div>    </Link>
+                                        <Link href="/POS"><div className="dropdown-item px-4 py-2">POS</div></Link>
+                                        <Link href="/Orders"><div className="dropdown-item px-4 py-2">Orders</div></Link>
+                                        <Link href="/Reservation"><div className="dropdown-item px-4 py-2">Reservation</div></Link>
+                                        <Link href="/Customer"><div className="dropdown-item px-4 py-2">Customer</div></Link>
+                                        <Link href="/Invoices"><div className="dropdown-item px-4 py-2">Invoices</div></Link>
+                                        <Link href="/Feedbacks"><div className="dropdown-item px-4 py-2">Feedbacks</div></Link>
                                     </div>
                                 )}
                     </div>
@@ -90,7 +90,7 @@ function Navbar() {
                                 UserName
                                 {dropdown && (
                                     <div className="dropdown-menu bg-white shadow-lg rounded-lg mt-2 absolute">
-                                        <div className="dropdown-item px-4 py-2">Profile</div>
+                                        <Link href="/Home"><div className="dropdown-item px-4 py-2">Profile</div></Link>
                                         <div className="dropdown-item px-4 py-2">My devices</div>
                                         <div className="dropdown-item px-4 py-2">Support</div>
                                         <div className="dropdown-item px-4 py-2">Logout</div>
