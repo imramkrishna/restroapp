@@ -1,6 +1,14 @@
+"use client"
 import React from 'react'
+import { useState } from 'react'
 
 function page() {
+  const [customerType, setCustomerType] = useState('dine-in');
+  const [table, setTable] = useState('Table No.1');
+  const[items,setitems]=useState([]);
+  const additems=(item)=>{
+    setitems([...items,item]);
+  }
   return (
     <>
     
@@ -31,28 +39,28 @@ function page() {
           <p className='text-xl font-medium'>Tuffle Fries</p>
           <p className='my-1'>Price: 200</p>
 
-          <button className='bg-green-500 rounded-xl p-2'>Add</button>
+          <button className='bg-green-500 rounded-xl p-2' onClick={()=>additems("Tuffle Fries")}>Add</button>
         
           </div>
           <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
           <p className='text-xl font-medium'>Biryani</p>
           <p className='my-1'>Price: 200</p>
 
-          <button className='bg-green-500 rounded-xl p-2 my-1'>Add</button>
+          <button className='bg-green-500 rounded-xl p-2 my-1' onClick={()=>additems("Biryani")}>Add</button>
         
           </div>
           <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
           <p className='text-xl font-medium'>Biryani</p>
           <p className='my-1'>Price: 200</p>
 
-          <button className='bg-green-500 rounded-xl p-2 my-1'>Add</button>
+          <button className='bg-green-500 rounded-xl p-2 my-1' onClick={()=>additems("Biryani")}>Add</button>
         
           </div>
           <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
           <p className='text-xl font-medium'>Biryani</p>
           <p className='my-1'>Price: 200</p>
 
-          <button className='bg-green-500 rounded-xl p-2 my-1'>Add</button>
+          <button className='bg-green-500 rounded-xl p-2 my-1' onClick={()=>additems("Biryani")}>Add</button>
         
           </div>
 
@@ -65,24 +73,39 @@ function page() {
            <div className="top-portion h-1/5 border-b-2 border-e-slate-100 flex-wrap">
            <input className='mx-6 my-2 border-2 border-e-slate-100 w-9/12 h-9 rounded-xl' type="text" value="Walking Customer" /><br />
            <label className='mx-6 my-2 py-2 border-2 border-e-slate-100 w-9/12 rounded-xl' htmlFor="customer-type"><span className='mx-3'>Select Dining option:</span></label>
-           <select id="customer-type" className="border rounded-xl  py-2">
+           <select 
+              id="customer-type" 
+              className="ml-2 p-1 border rounded" 
+              value={customerType} 
+              onChange={(e) => setCustomerType(e.target.value)}
+            >
               <option value="dine-in">Dine In</option>
               <option value="takeaway">Takeaway</option>
               <option value="delivery">Delivery</option>
             </select> <br /> <br />
             <label className='mx-6 py-2 border-2 border-e-slate-100 w-9/12 rounded-xl' htmlFor="table"><span className='mx-3'>Select Table:</span></label>
-           <select id="table" className="border rounded-xl  py-2">
+            <select 
+              id="table" 
+              className="border rounded-xl py-2" 
+              value={table} 
+              onChange={(e) => setTable(e.target.value)}
+            >
               <option >Table No.1</option>
-              <option >Table No.1</option>
-              <option >Table No.1</option>
-              <option >Table No.1</option>
-              <option >Table No.1</option>
-              <option >Table No.1</option>
+              <option >Table No.2</option>
+              <option >Table No.3</option>
+              <option >Table No.4</option>
+              <option >Table No.5</option>
+              <option >Table No.6</option>
             </select>
 
 
            </div>
            <div className="middle-portion h-4/6">
+           {items.map((item, index) => (
+              <div key={index} className="item">
+                <p>{item}</p>
+              </div>
+            ))}
 
            </div>
 
