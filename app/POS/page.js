@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
-import { useRouter } from 'next/router';
+import axios from 'axios';
 
 
 
@@ -120,12 +120,24 @@ function Page() {
     doc.save("bill.pdf");
   };
 
-  // const sendToKitchen = () => {
-  //   router.push({
-  //     pathname: '/Kitchen',
-  //     query: { billings: JSON.stringify(billings) },
-  //   });
-  // };
+  const sendToKitchen = async () => {
+    const tableBilling = billings[table];
+    try {
+      await axios.post('http://localhost:5000/api/billings', {
+        table,
+        items: tableBilling.items.map(item => ({
+          name: item.name,
+          price: item.price,
+          quantity: tableBilling.quantities[item.name],
+        })),
+        totalPrice: tableBilling.totalPrice,
+      });
+      alert('Billing data sent to kitchen successfully!');
+    } catch (error) {
+      console.error('Error sending billing data to kitchen:', error);
+      alert('Failed to send billing data to kitchen.');
+    }
+  };
 
   return (
     <>
@@ -216,13 +228,13 @@ function Page() {
           </div>
           <div className="middle-portion h-4/6 overflow-auto flex flex-col">
             {billings[table].items.map((item, index) => (
-              <div key={index} className="item flex flex-col justify-around my-3 border-2 h-1/6 border-e-slate-100 p-3">
-                <p>{index + 1}. {item.name} x {billings[table].quantities[item.name]}</p>
-                <p>{item.price * billings[table].quantities[item.name]}</p>
-                <div className="flex justify-center mt-2">
-                  <button className="h-9 mx-3 bg-blue-500 text-white rounded px-2" onClick={() => incrementQuantity(item.name, item.price)}>+</button>
-                  <button className="h-9 mx-3 bg-red-500 text-white rounded px-2" onClick={() => decrementQuantity(item.name, item.price)}>-</button>
-                  <button className="h-9 mx-3 bg-red-700 text-white rounded px-2" onClick={() => deleteItem(item.name, item.price)}>Delete</button>
+              <div key={index} className="item flex justify-around my-3 border-2 h-1/6 border-e-slate-100 p-3">
+                <div><p>{index + 1}. {item.name} x {billings[table].quantities[item.name]}</p></div>
+                <div><p>{item.price * billings[table].quantities[item.name]}</p></div>
+                <div className="justify-center mt-2">
+                  <button className="h-7 mx-3 bg-blue-500 text-white rounded px-2" onClick={() => incrementQuantity(item.name, item.price)}>+</button>
+                  <button className="h-7 mx-3 bg-red-500 text-white rounded px-2" onClick={() => decrementQuantity(item.name, item.price)}>-</button>
+                  <button className="h-7 mx-3 bg-red-700 text-white rounded px-2" onClick={() => deleteItem(item.name, item.price)}>Remove</button>
                 </div>
               </div>
             ))}
@@ -233,7 +245,7 @@ function Page() {
           <div className="bottom-portion h-1/6 border-t-2 border-e-slate-100">
             <div className="top flex justify-between">
               <button className="draft w-1/6 border-2 mx-2 border-e-slate-100 rounded-xl my-3">Draft</button>
-              <button className="send-to-kitchen w-8/12 border-2 mx-2 border-e-slate-100 rounded-xl my-3">Send to Kitchen</button>
+              <button className="send-to-kitchen w-8/12 border-2 mx-2 border-e-slate-100 rounded-xl my-3" onClick={sendToKitchen}>Send to Kitchen</button>
             </div>
             <div className="bottom w-4/5 mx-8 my-3 bg-green-500 text-center rounded-xl">
               <button className='receipt h-8' onClick={generatePDF}>Create Receipt and Pay</button>
