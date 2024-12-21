@@ -18,6 +18,8 @@ function Page() {
     fetchBillings();
   }, []);
 
+  
+
   return (
     <div>
       <h1>Kitchen Orders</h1>

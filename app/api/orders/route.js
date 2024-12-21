@@ -14,7 +14,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  console.log("Post request received.")
+  
     await connectDB();
   
     try {

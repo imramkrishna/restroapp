@@ -1,74 +1,47 @@
-import React from 'react'
+"use client"
+import React, { useEffect } from 'react'
+import { useState } from 'react';
+import axios from 'axios';
 
 function page() {
+  const [billings, setBillings] = useState([]);
+
+  useEffect(()=>{
+    const fetchBillings=async ()=>{
+      try{
+        const response =await axios.get("/api/orders")
+        setBillings(response.data)
+        console.log(`Data fetched successfully`);
+
+
+      }catch(error){
+        console.log("Error fetching data")
+      }
+    }
+    fetchBillings();
+  },[])
+
   return (
-    <div className='mx-5 min-h-lvh flex flex-wrap'>
-      <div className="order-card mx-3 h-80 w-1/4 border-2 border-e-slate-100 rounded-xl">
-      <h1 className='m-4'>Dine out / Delivery</h1>
-      <div className="order-details mx-4 bg-slate-200 h-36 w-11/12 border-2 border-e-slate-100 rounded-xl">
-      <ul className='flex mx-4'>
-        <li className='w-1/2'>Token No.10</li>
-        <li className='w-1/2'>Status:Paid</li>
-      </ul>
-      <ul className='Orders my-8 mx-4'>
-        <li>French Fries</li>
-        <li>Biryani</li>
-      </ul>
-
+    <div>
+      <div className="orders-list">
+        <h1>Orders</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {billings.map((billing)=>(
+            <div key={billing._id} className="card border rounded p-4 shadow">
+              <h2 className="text-xl font-bold">Table: {billing.table}</h2>
+              <ul>
+                {billing.items.map((item,index)=>(
+                  <li key={index}>
+                    {item.name} x {item.quantity} = ${item.price * item.quantity}
+                  </li>
+                ))}
+              </ul>
+              <p className="font-bold">Total Price: ${billing.totalPrice}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
-
-      </div>
-      <div className="order-card mx-3  h-80 w-1/4 border-2 border-e-slate-100 rounded-xl">
-      <h1 className='m-4'>Dine out / Delivery</h1>
-      <div className="order-details mx-4 bg-slate-200 h-36 w-11/12 border-2 border-e-slate-100 rounded-xl">
-      <ul className='flex mx-4'>
-        <li className='w-1/2'>Token No.10</li>
-        <li className='w-1/2'>Status:Paid</li>
-      </ul>
-      <ul className='Orders my-8 mx-4'>
-        <li>French Fries</li>
-        <li>Biryani</li>
-      </ul>
-
-      </div>
-
-
-      </div>
-      
-      <div className="order-card mx-3 h-80 w-1/4 border-2 border-e-slate-100 rounded-xl">
-      <h1 className='m-4'>Dine out / Delivery</h1>
-      <div className="order-details mx-4 bg-slate-200 h-36 w-11/12 border-2 border-e-slate-100 rounded-xl">
-      <ul className='flex mx-4'>
-        <li className='w-1/2'>Token No.10</li>
-        <li className='w-1/2'>Status:Paid</li>
-      </ul>
-      <ul className='Orders my-8 mx-4'>
-        <li>French Fries</li>
-        <li>Biryani</li>
-      </ul>
-
-      </div>
-
-
-      </div>
-      
-      <div className="order-card mx-3 h-80 w-1/4 border-2 border-e-slate-100 rounded-xl">
-      <h1 className='m-4'>Dine out / Delivery</h1>
-      <div className="order-details mx-4 bg-slate-200 h-36 w-11/12 border-2 border-e-slate-100 rounded-xl">
-      <ul className='flex mx-4'>
-        <li className='w-1/2'>Token No.10</li>
-        <li className='w-1/2'>Status:Paid</li>
-      </ul>
-      <ul className='Orders my-8 mx-4'>
-        <li>French Fries</li>
-        <li>Biryani</li>
-      </ul>
-
-      </div>
-
-
-      </div>
       
       
     </div>
