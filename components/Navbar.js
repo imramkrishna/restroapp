@@ -19,7 +19,7 @@ function Navbar() {
         <>
             <nav>
                 <div className='bg-slate-100 w-36 min-h-screen md:bg-slate-100 md:w-72 fixed'>
-                    <div className="navcontent md:p-7">
+                    <div className="navcontent overflow-y-auto h-full md:p-7">
                         {/* ==================Restro Pro logo setting=================== */}
                         <div className='md:font-bold md:px-7 text-4xl md:m-auto'>
                             <h1 className='md:font-extrabold'>Restro</h1>

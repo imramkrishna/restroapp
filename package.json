@@ -18,10 +18,11 @@
     "express": "^4.21.2",
     "jspdf": "^2.5.2",
     "mongoose": "^8.9.2",
-    "next": "15.1.0",
+    "next": "^15.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.0.2"
+    "react-router-dom": "^7.0.2",
+    "turbopack": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
