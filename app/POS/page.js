@@ -164,14 +164,14 @@ function Page() {
         </div>
       </div>
 
-      <div className='point-of-sale m-4 flex'>
+      <div className='point-of-sale m-4 lg:flex'>
         {/*====================Setting up menu showing of pos section==============================*/}
-        <div className="menu w-1/2 border-2 border-e-slate-100 rounded-2xl overflow-auto">
+        <div className="menu w-full lg:w-1/2 border-2 border-e-slate-100 rounded-2xl overflow-auto">
           <div className="searchbar">
             <input type="text" placeholder="Search for items" className="bg-slate-100 w-1/4 border-2 border-e-slate-300 rounded-2xl p-1 my-2 mx-2" />
           </div>
           {/**================Showing Items portion============================ */}
-          <div className="items-portion flex flex-wrap">
+          <div className="items-portion flex flex-wrap overflow-auto">
             <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
               <p className='text-xl font-medium'>Tuffle Fries</p>
               <p className='my-1'>Price: 200</p>
@@ -196,9 +196,9 @@ function Page() {
         </div>
 
         {/*====================Setting up Billing Portion of pos section==============================*/}
-        <div className="billing w-1/3 border-2 border-e-slate-100 rounded-2xl mx-2 min-h-screen overflow-auto">
+        <div className="billing w-full lg:w-1/3 border-2 border-e-slate-100 rounded-2xl mx-2 min-h-screen overflow-auto">
           <div className="top-portion h-1/4 border-b-2 border-e-slate-100 my-6 text-sm flex flex-col items-center justify-center space-y-4">
-            <div className="flex flex-row w-full h-1/6">
+            <div className="flex flex-row w-full lg:h-1/6">
               <label className='my-1' htmlFor="table">
                 Select Table Number: 
               </label>
