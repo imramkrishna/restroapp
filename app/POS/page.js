@@ -6,11 +6,12 @@ import axios from 'axios';
 
 
 function Page() {
-  //const router = useRouter();
 
-  const [customerType, setCustomerType] = useState('dine-in');
+  const [customer, setCustomer] = useState('');
+  const [phone, setPhone] = useState('');
   const [table, setTable] = useState('1');
   const [billings, setBillings] = useState({
+    'Delivery': { items: [], quantities: {}, totalPrice: 0 },
     '1': { items: [], quantities: {}, totalPrice: 0 },
     '2': { items: [], quantities: {}, totalPrice: 0 },
     '3': { items: [], quantities: {}, totalPrice: 0 },
@@ -125,8 +126,10 @@ function Page() {
     try {
       const response = await axios.post('/api/orders', {
         table,
+        name:customer,
+        phone,
         items: tableBilling.items.map(item => ({
-          name: item.name,
+          itemname: item.name,
           price: item.price,
           quantity: tableBilling.quantities[item.name],
         })),
@@ -147,7 +150,7 @@ function Page() {
 
 
   return (
-    <>
+    <div>
       {/*====================Setting up top titles of pos section==============================*/}
       <div className="top-portion flex justify-between">
         <div className="left font-bold text-xl mx-3">
@@ -163,7 +166,7 @@ function Page() {
 
       <div className='point-of-sale m-4 flex'>
         {/*====================Setting up menu showing of pos section==============================*/}
-        <div className="menu w-1/2 min-h-screen border-2 border-e-slate-100 rounded-2xl overflow-auto">
+        <div className="menu w-1/2 border-2 border-e-slate-100 rounded-2xl overflow-auto">
           <div className="searchbar">
             <input type="text" placeholder="Search for items" className="bg-slate-100 w-1/4 border-2 border-e-slate-300 rounded-2xl p-1 my-2 mx-2" />
           </div>
@@ -180,59 +183,74 @@ function Page() {
               <button className='bg-green-500 rounded-xl p-2 my-1' onClick={() => additems('Biryani', 200)}>Add</button>
             </div>
             <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
-              <p className='text-xl font-medium'>Biryani</p>
-              <p className='my-1'>Price: 200</p>
-              <button className='bg-green-500 rounded-xl p-2 my-1' onClick={() => additems('Biryani', 200)}>Add</button>
+              <p className='text-xl font-medium'>Pizzaa</p>
+              <p className='my-1'>Price: 300</p>
+              <button className='bg-green-500 rounded-xl p-2 my-1' onClick={() => additems('Pizza', 300)}>Add</button>
             </div>
             <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
-              <p className='text-xl font-medium'>Biryani</p>
-              <p className='my-1'>Price: 200</p>
-              <button className='bg-green-500 rounded-xl p-2 my-1' onClick={() => additems('Biryani', 200)}>Add</button>
+              <p className='text-xl font-medium'>Coffee</p>
+              <p className='my-1'>Price: 250</p>
+              <button className='bg-green-500 rounded-xl p-2 my-1' onClick={() => additems('Coffee', 250)}>Add</button>
             </div>
           </div>
         </div>
 
         {/*====================Setting up Billing Portion of pos section==============================*/}
         <div className="billing w-1/3 border-2 border-e-slate-100 rounded-2xl mx-2 min-h-screen overflow-auto">
-          <div className="top-portion h-1/5 border-b-2 border-e-slate-100 my-6 text-sm">
-            <label htmlFor="customer-type">Walking Type:</label>
-            <select
-              id="customer-type"
-              className="ml-2 p-1 border rounded"
-              value={customerType}
-              onChange={(e) => setCustomerType(e.target.value)}
-            >
-              <option value="dine-in">Dine In</option>
-              <option value="takeaway">Takeaway</option>
-              <option value="delivery">Delivery</option>
-            </select>
+          <div className="top-portion h-1/4 border-b-2 border-e-slate-100 my-6 text-sm flex flex-col items-center justify-center space-y-4">
+            <div className="flex flex-row w-full h-1/6">
+              <label className='my-1' htmlFor="table">
+                Select Table Number: 
+              </label>
+              <select
+                id="table"
+                className="border rounded-xl px-2 w-1/4 h-3/4"
+                value={table}
+                onChange={(e) => setTable(e.target.value)}
+              >
+                {Object.keys(billings).map((tableKey) => (
+                  <option key={tableKey} value={tableKey}>{tableKey}</option>
+                ))}
+              </select>
+            </div>
 
-            <label className='mx-6 py-2 border-2 border-e-slate-100 w-9/12 rounded-xl' htmlFor="table">
-              <span className='mx-3'>Select Table Number:</span>
-            </label>
-            <select
-              id="table"
-              className="border rounded-xl py-2 px-4"
-              value={table}
-              onChange={(e) => setTable(e.target.value)}
-            >
-
-              {Object.keys(billings).map((tableKey) => (
-                <option key={tableKey} value={tableKey}>{tableKey}</option>
-              ))}
-            </select>
-            <div className="add-table mt-4 justify-center flex">
+            <div className="flex flex-col w-full m-auto">
+              <label htmlFor="name">Customer's Name:</label>
               <input
-                className=" rounded-xl border p-1"
+                className="rounded-xl border p-2 w-11/12 m-auto"
+                type="text"
+                placeholder="Customer's Name"
+                id="name"
+                value={customer}
+                onChange={(e) => setCustomer(e.target.value)}
+              />
+            </div>
+            
+            <div className="flex flex-col w-full m-auto">
+              <label htmlFor="phone">Customer's Phone:</label>
+              <input
+                className="rounded-xl border p-2 w-11/12 m-auto"
+                type="text"
+                placeholder="Customer's Phone"
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+
+              />
+            </div>
+
+            <div className="add-table flex flex-row w-full m-auto">
+              <input
+                className="rounded-xl border p-1 w-3/4"
                 type="text"
                 placeholder="New Table Number"
                 value={newTable}
                 onChange={(e) => setNewTable(e.target.value)}
-
               />
               <button className="ml-2 bg-blue-500 text-white rounded px-2" onClick={addTable}>Add Table</button>
             </div>
           </div>
+
           <div className="middle-portion h-4/6 overflow-auto flex flex-col">
             {billings[table].items.map((item, index) => (
               <div key={index} className="item flex justify-around my-3 border-2 h-1/6 border-e-slate-100 p-3">
@@ -260,7 +278,7 @@ function Page() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
