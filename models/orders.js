@@ -10,9 +10,12 @@ const BillingSchema = new Schema({
       itemname: { type: String, required: true },
       price: { type: Number, required: true },
       quantity: { type: Number, required: true },
+      Kitchen:{type:String,required:true,default:"Start Making"},
     },
   ],
-  totalPrice: { type: Number, required: true }
+  totalPrice: { type: Number, required: true },
+  Payment:{type:String,required:true, default:"Pending"},
+  
   
 },{timestamps:true});
 
