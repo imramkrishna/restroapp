@@ -12,6 +12,11 @@ function page() {
     phone: '',
     currentTable: null
   });
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState({
+    method: '',
+    tableNum: null
+  });
 
   useEffect(() => {
     const fetchBillings = async () => {
@@ -37,8 +42,27 @@ function page() {
   }, {});
 
   const handlePayment = async (tableNum) => {
-    console.log(`Payment for table ${tableNum}`);
-  }
+    const totalAmount = groupedBillings[tableNum].reduce(
+      (sum, order) => sum + order.totalPrice, 
+      0
+    );
+    setPaymentDetails({ method: '', tableNum });
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSubmit = async (e) => {
+    e.preventDefault();
+    setShowPaymentModal(false);
+    
+    // Show success message
+    alert(`Payment of $${groupedBillings[paymentDetails.tableNum].reduce(
+      (sum, order) => sum + order.totalPrice, 
+      0
+    )} received through ${paymentDetails.method}`);
+    
+    // Trigger receipt printing
+    handlePrintReceipt(paymentDetails.tableNum);
+  };
 
   const handlePrintReceipt = (tableNum) => {
     setCustomerDetails(prev => ({...prev, currentTable: tableNum}));
@@ -201,6 +225,82 @@ function page() {
                   className="px-4 py-2 bg-blue-500 text-white rounded"
                 >
                   Print Receipt
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {showPaymentModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg w-96">
+            <h2 className="text-xl mb-4">Payment Details</h2>
+            <p className="mb-4 text-lg">
+              Total Amount: $
+              {groupedBillings[paymentDetails.tableNum].reduce(
+                (sum, order) => sum + order.totalPrice, 
+                0
+              )}
+            </p>
+            <form onSubmit={handlePaymentSubmit}>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="cash"
+                    name="paymentMethod"
+                    value="Cash"
+                    onChange={(e) => setPaymentDetails(prev => ({
+                      ...prev, 
+                      method: e.target.value
+                    }))}
+                    required
+                    className="mr-2"
+                  />
+                  <label htmlFor="cash">Cash</label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="card"
+                    name="paymentMethod"
+                    value="Card"
+                    onChange={(e) => setPaymentDetails(prev => ({
+                      ...prev, 
+                      method: e.target.value
+                    }))}
+                    className="mr-2"
+                  />
+                  <label htmlFor="card">Card</label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="ewallet"
+                    name="paymentMethod"
+                    value="E-Wallet"
+                    onChange={(e) => setPaymentDetails(prev => ({
+                      ...prev, 
+                      method: e.target.value
+                    }))}
+                    className="mr-2"
+                  />
+                  <label htmlFor="ewallet">E-Wallet</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowPaymentModal(false)}
+                  className="px-4 py-2 bg-gray-200 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-green-500 text-white rounded"
+                >
+                  Confirm Payment
                 </button>
               </div>
             </form>
