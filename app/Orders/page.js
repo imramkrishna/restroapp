@@ -2,9 +2,16 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import axios from 'axios';
+import jsPDF from 'jspdf';
 
 function page() {
   const [billings, setBillings] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [customerDetails, setCustomerDetails] = useState({
+    name: '',
+    phone: '',
+    currentTable: null
+  });
 
   useEffect(() => {
     const fetchBillings = async () => {
@@ -33,24 +40,71 @@ function page() {
     console.log(`Payment for table ${tableNum}`);
   }
 
+  const handlePrintReceipt = (tableNum) => {
+    setCustomerDetails(prev => ({...prev, currentTable: tableNum}));
+    setShowModal(true);
+  };
 
-const handlePrintReceipt = (tableNum) => {
-  console.log(`Printing receipt for table ${tableNum}`);
-}
-
-const handleCancel = async (tableNum) => {
-  console.log(`Cancel order for table ${tableNum}`);
-  try {
-    await axios.delete(`/api/orders/${tableNum}`);
-    console.log(`Order for table ${tableNum} cancelled successfully`);
-  } catch(error) {
-    console.log(`Error cancelling order for table ${tableNum}`,error);
+  const handleCancel = async (tableNum) => {
+    console.log(`Cancel order for table ${tableNum}`);
+    try {
+      await axios.delete(`/api/orders/${tableNum}`);
+      console.log(`Order for table ${tableNum} cancelled successfully`);
+    } catch(error) {
+      console.log(`Error cancelling order for table ${tableNum}`,error);
+    }
   }
-}
 
+  const generatePDF = async (tableNum, customerName, customerPhone) => {
+    const doc = new jsPDF();
+    const tableOrders = groupedBillings[tableNum];
+    const totalAmount = tableOrders.reduce((sum, order) => sum + order.totalPrice, 0);
 
+    // Header
+    doc.setFontSize(20);
+    doc.text('Restaurant Receipt', 20, 20);
+    
+    // Customer Details
+    doc.setFontSize(12);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 40);
+    doc.text(`Table: ${tableNum}`, 20, 50);
+    doc.text(`Customer: ${customerName}`, 20, 60);
+    doc.text(`Phone: ${customerPhone}`, 20, 70);
+    
+    // Order Details
+    let yPos = 90;
+    doc.text('Order Details:', 20, yPos);
+    yPos += 10;
 
-  
+    tableOrders.forEach(order => {
+      order.items.forEach(item => {
+        doc.text(
+          `${item.itemname} x ${item.quantity} = $${item.price * item.quantity}`,
+          30,
+          yPos
+        );
+        yPos += 10;
+      });
+    });
+
+    // Total
+    doc.setFontSize(14);
+    doc.text(`Total Amount: $${totalAmount}`, 20, yPos + 10);
+
+    // Save
+    doc.save(`table${tableNum}_receipt.pdf`);
+  };
+
+  const handleSubmitCustomerDetails = (e) => {
+    e.preventDefault();
+    generatePDF(
+      customerDetails.currentTable,
+      customerDetails.name,
+      customerDetails.phone
+    );
+    setShowModal(false);
+    setCustomerDetails({ name: '', phone: '', currentTable: null });
+  };
 
   return (
     <div>
@@ -113,6 +167,46 @@ const handleCancel = async (tableNum) => {
           })}
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg">
+            <h2 className="text-xl mb-4">Enter Customer Details</h2>
+            <form onSubmit={handleSubmitCustomerDetails}>
+              <input
+                type="text"
+                placeholder="Customer Name"
+                className="block w-full mb-2 p-2 border rounded"
+                value={customerDetails.name}
+                onChange={(e) => setCustomerDetails(prev => ({...prev, name: e.target.value}))}
+                required
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                className="block w-full mb-4 p-2 border rounded"
+                value={customerDetails.phone}
+                onChange={(e) => setCustomerDetails(prev => ({...prev, phone: e.target.value}))}
+                required
+              />
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-gray-200 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                  Print Receipt
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
