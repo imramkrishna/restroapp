@@ -59,6 +59,26 @@ function page() {
       (sum, order) => sum + order.totalPrice, 
       0
     )} received through ${paymentDetails.method}`);
+
+    try {
+      await axios.post('/api/payments', {
+      tableNum: paymentDetails.tableNum,
+      method: paymentDetails.method,
+      amount: groupedBillings[paymentDetails.tableNum].reduce(
+        (sum, order) => sum + order.totalPrice, 
+        0
+      )
+      });
+      console.log('Payment details saved successfully');
+    } catch (error) {
+      console.log('Error saving payment details', error);
+    }
+    try{
+      await axios.delete(`/api/orders/${paymentDetails.tableNum}`);
+      console.log(`Order for table ${paymentDetails.tableNum} deleted successfully`);
+    }catch(error){
+      console.log(`"Order cannot be completed for table ${paymentDetails.tableNum}"`, error);
+    }
     
     // Trigger receipt printing
     handlePrintReceipt(paymentDetails.tableNum);
