@@ -5,10 +5,12 @@ import axios from 'axios';
 function page() {
     const [reservations, setReservations] = useState([]);
     const [ordersCount, setOrdersCount] = useState(0);
+    const [topSellingItems, setTopSellingItems] = useState([]);
 
     useEffect(() => {
         fetchReservations();
         fetchOrdersCount();
+        fetchTopSellingItems();
     }, []);
 
     const fetchReservations = async () => {
@@ -26,6 +28,37 @@ function page() {
             setOrdersCount(response.data.length);
         } catch (error) {
             console.error('Error fetching orders:', error);
+        }
+    };
+
+    const fetchTopSellingItems = async () => {
+        try {
+            const response = await axios.get('/api/orders');
+            const orders = response.data;
+            
+            // Calculate item sales
+            const itemSales = {};
+            orders.forEach(order => {
+                order.items.forEach(item => {
+                    if (!itemSales[item.itemname]) {
+                        itemSales[item.itemname] = {
+                            name: item.itemname,
+                            quantity: 0,
+                            price: item.price
+                        };
+                    }
+                    itemSales[item.itemname].quantity += item.quantity;
+                });
+            });
+
+            // Convert to array and sort by quantity
+            const sortedItems = Object.values(itemSales)
+                .sort((a, b) => b.quantity - a.quantity)
+                .slice(0, 5); // Get top 5
+
+            setTopSellingItems(sortedItems);
+        } catch (error) {
+            console.error('Error fetching top selling items:', error);
         }
     };
 
@@ -68,58 +101,17 @@ function page() {
 
                 <div className="top-selling-items rounded-2xl border-2 overflow-auto md:w-1/4 md:h-96 md:mx-10 md:">
                     <h3 className='md:m-5 font-extrabold text-xl'>Top Selling Items</h3>
-                    <div className="items flex justify-between mx-5">
-                        <ul>
-                            <li className=''>Pizza</li>
-                            <li>$15</li>
-                        </ul>
-                        <ul>
-                            <li className='my-2'>15</li>
-                        </ul>
-                    </div>
-
-
-                    <div className="items flex justify-between m-5">
-                        <ul>
-                            <li>Burger</li>
-                            <li>$10</li>
-                        </ul>
-                        <ul>
-                            <li className='my-2'>15</li>
-                        </ul>
-                    </div>
-
-                    <div className="items flex justify-between m-5">
-                        <ul>
-                            <li>Momo</li>
-                            <li>$5</li>
-                        </ul>
-                        <ul>
-                            <li className='my-2'>15</li>
-                        </ul>
-                    </div>
-
-                    <div className="items flex justify-between m-5">
-                        <ul>
-                            <li>Sizzler</li>
-                            <li>$9</li>
-                        </ul>
-                        <ul>
-                            <li className='my-2'>15</li>
-                        </ul>
-                    </div>
-
-                    <div className="items flex justify-between m-5">
-                        <ul>
-                            <li>Biryani</li>
-                            <li>$18</li>
-                        </ul>
-                        <ul>
-                            <li className='my-2'>15</li>
-                        </ul>
-                    </div>
-
-
+                    {topSellingItems.map((item, index) => (
+                        <div key={index} className="items flex justify-between m-5">
+                            <ul>
+                                <li>{item.name}</li>  
+                                <li>${item.price}</li>
+                            </ul>
+                            <ul>
+                                <li className='my-2'>{item.quantity}</li>
+                            </ul>
+                        </div>
+                    ))}
                 </div>
 
 
