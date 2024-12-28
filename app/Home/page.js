@@ -1,6 +1,34 @@
-import React from 'react'
+'use client';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function page() {
+    const [reservations, setReservations] = useState([]);
+    const [ordersCount, setOrdersCount] = useState(0);
+
+    useEffect(() => {
+        fetchReservations();
+        fetchOrdersCount();
+    }, []);
+
+    const fetchReservations = async () => {
+        try {
+            const response = await axios.get('/api/reservations');
+            setReservations(response.data);
+        } catch (error) {
+            console.error('Error fetching reservations:', error);
+        }
+    };
+
+    const fetchOrdersCount = async () => {
+        try {
+            const response = await axios.get('/api/orders');
+            setOrdersCount(response.data.length);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
+    };
+
     return (
         <>
             <h1 className='font-sans font-bold text-2xl p-3'>Dashboard</h1>
@@ -11,26 +39,26 @@ function page() {
 
                 <div className="reservation overflow-auto md:h-96 md:w-1/4 rounded-2xl border-2">
                     <h3 className='font-bold text-xl p-2'>Reservations</h3>
-                    <ul className='md:m-8'>
-                        <li className='text-xs'>Dec 18, 2024, 5:25AM</li>
-                        <li className='font-extrabold'>John Doe- (1234567)</li>
-                        <li className='text-sm'>4 people  Table A2</li>
-
-                    </ul>
-                    <ul className='md:m-8'>
-                        <li className='text-xs'>Dec 18, 2024, 5:25AM</li>
-                        <li className='font-extrabold'>John Doe- (1234567)</li>
-                        <li className='text-sm'>4 people  Table A2</li>
-
-                    </ul>
-                    <ul className='md:m-8'>
-                        <li className='text-xs'>Dec 18, 2024, 5:25AM</li>
-                        <li className='font-extrabold'>John Doe- (1234567)</li>
-                        <li className='text-sm'>4 people  Table A2</li>
-
-                    </ul>
-
-
+                    {reservations.map((reservation) => (
+                        <ul key={reservation._id} className='md:m-8'>
+                            <li className='text-xs'>
+                                {new Date(reservation.date).toLocaleString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    hour12: true
+                                })}
+                            </li>
+                            <li className='font-extrabold'>
+                                {reservation.customerName} - ({reservation.phoneNumber})
+                            </li>
+                            <li className='text-sm'>
+                                {reservation.personCount} people Table {reservation.tableNumber}
+                            </li>
+                        </ul>
+                    ))}
                 </div>
 
 
@@ -103,7 +131,7 @@ function page() {
                 <div className="details block h-96 md:w-1/4">
                     <div className="orders h-1/3 border-2 rounded-2xl">
                         <p className='md:mx-6 font-semibold md:my-4'>Orders</p>
-                        <span className='md:mx-7 font-extrabold text-4xl'>18</span>
+                        <span className='md:mx-7 font-extrabold text-4xl'>{ordersCount}</span>
 
 
                     </div>
