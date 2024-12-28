@@ -198,7 +198,7 @@ function Page() {
                 <p className="text-xl font-medium">{item.itemName}</p>
                 <p className="my-1">Price: {item.itemPrice}</p>
                 <button 
-                  className="bg-green-500 rounded-xl p-2 my-1" 
+                  className="bg-green-500 rounded-xl p-2 my-1 text-stone-100" 
                   onClick={() => additems(item.itemName, item.itemPrice)}
                 >
                   Add
