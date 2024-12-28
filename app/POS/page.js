@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import axios from 'axios';
 
@@ -147,6 +147,20 @@ function Page() {
     }
   };
 
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const res = await axios.get('/api/menu');
+        setMenuItems(res.data);
+      } catch (error) {
+        console.error('Error fetching menu items:', error);
+      }
+    };
+    fetchMenu();
+  }, []);
+
 
 
   return (
@@ -172,26 +186,25 @@ function Page() {
           </div>
           {/**================Showing Items portion============================ */}
           <div className="items-portion flex flex-wrap overflow-auto">
-            <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
-              <p className='text-xl font-medium'>Tuffle Fries</p>
-              <p className='my-1'>Price: 200</p>
-              <button className='bg-green-500 rounded-xl p-2' onClick={() => additems('Tuffle Fries', 200)}>Add</button>
-            </div>
-            <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
-              <p className='text-xl font-medium'>Biryani</p>
-              <p className='my-1'>Price: 200</p>
-              <button className='bg-green-500 rounded-xl p-2 my-1' onClick={() => additems('Biryani', 200)}>Add</button>
-            </div>
-            <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
-              <p className='text-xl font-medium'>Pizzaa</p>
-              <p className='my-1'>Price: 300</p>
-              <button className='bg-green-500 rounded-xl p-2 my-1' onClick={() => additems('Pizza', 300)}>Add</button>
-            </div>
-            <div className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
-              <p className='text-xl font-medium'>Coffee</p>
-              <p className='my-1'>Price: 250</p>
-              <button className='bg-green-500 rounded-xl p-2 my-1' onClick={() => additems('Coffee', 250)}>Add</button>
-            </div>
+            {menuItems.map(item => (
+              <div key={item._id} className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
+                {item.itemImage && (
+                  <img 
+                    src={item.itemImage} 
+                    alt={item.itemName}
+                    className="w-full h-32 object-cover mb-2"
+                  />
+                )}
+                <p className="text-xl font-medium">{item.itemName}</p>
+                <p className="my-1">Price: {item.itemPrice}</p>
+                <button 
+                  className="bg-green-500 rounded-xl p-2 my-1" 
+                  onClick={() => additems(item.itemName, item.itemPrice)}
+                >
+                  Add
+                </button>
+              </div>
+            ))}
           </div>
         </div>
 

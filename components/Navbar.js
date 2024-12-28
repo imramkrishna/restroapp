@@ -49,7 +49,7 @@ function Navbar() {
                         <p className='font-bold'>Offerings</p>
                         <ul>
                             <Link href="/Reservations"><li className='my-5 mx-6'>Reservations</li></Link>
-                            <Link href="/Customers"><li className='my-5 mx-6'>Customers</li></Link>
+                            <Link href="/Menu"><li className='my-5 mx-6'>Menu Items</li></Link>
                             <Link href="/Invoices"><li className='my-5 mx-6'>Invoices</li></Link>
                         </ul>
                     </div>
@@ -76,8 +76,8 @@ function Navbar() {
                                         <Link href="/Kitchen"><div className="dropdown-item px-4 py-2">Kitchen</div>    </Link>
                                         <Link href="/POS"><div className="dropdown-item px-4 py-2">POS</div></Link>
                                         <Link href="/Orders"><div className="dropdown-item px-4 py-2">Orders</div></Link>
-                                        <Link href="/Reservation"><div className="dropdown-item px-4 py-2">Reservation</div></Link>
-                                        <Link href="/Customer"><div className="dropdown-item px-4 py-2">Customer</div></Link>
+                                        <Link href="/Reservation"><div className="dropdown-item px-4 py-2">Reservations</div></Link>
+                                        <Link href="/Menu"><div className="dropdown-item px-4 py-2">Menu Items</div></Link>
                                         <Link href="/Invoices"><div className="dropdown-item px-4 py-2">Invoices</div></Link>
                                         <Link href="/Feedbacks"><div className="dropdown-item px-4 py-2">Feedbacks</div></Link>
                                     </div>
