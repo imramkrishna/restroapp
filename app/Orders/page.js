@@ -151,59 +151,62 @@ function page() {
   };
 
   return (
-    <div>
-      <div className="orders-list">
-        <h1>Orders</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="p-4 md:p-6 lg:p-8">
+      <div className="orders-list space-y-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Orders</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {Object.entries(groupedBillings).map(([tableNum, tableBillings]) => {
             const totalTablePrice = tableBillings.reduce((sum, billing) => 
               sum + billing.totalPrice, 0
             );
             
             return (
-              <div key={tableNum} className="card border rounded p-4 shadow">
-                <div className="top flex justify-between">
-                  <p className="text-xl font-bold">Table: {tableNum}</p>
-                  <p className="text-xl font-bold text-green-600">
+              <div key={tableNum} className="card bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
+                <div className="flex justify-between items-center mb-4">
+                  <p className="text-xl font-bold text-gray-800">Table: {tableNum}</p>
+                  <p className="text-lg font-bold text-green-600">
                     Total: ${totalTablePrice}
                   </p>
                 </div>
                 {tableBillings.map((billing) => (
-                  <div key={billing._id} className="mt-4 border-t pt-2">
-                    <div className="flex justify-between">
-                      <span>{billing.name}</span>
-                      <span className="text-sm text-gray-500">
+                  <div key={billing._id} className="mt-4 pt-4 border-t border-gray-100">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-gray-700">{billing.name}</span>
+                      <span className="text-sm text-gray-500 bg-gray-50 px-2 py-1 rounded">
                         {new Date(billing.createdAt).toLocaleTimeString()}
                       </span>
                     </div>
-                    <ul className="mt-2">
+                    <ul className="mt-3 space-y-2">
                       {billing.items.map((item, index) => (
-                        <li key={index}>
-                          {item.itemname} x {item.quantity} = ${item.price * item.quantity}
+                        <li key={index} className="flex justify-between text-gray-600">
+                          <span>{item.itemname} x {item.quantity}</span>
+                          <span>${item.price * item.quantity}</span>
                         </li>
                       ))}
                     </ul>
-                    <p className="font-bold">Order Total: ${billing.totalPrice}</p>
+                    <p className="mt-3 pt-3 border-t text-right font-bold">
+                      Order Total: ${billing.totalPrice}
+                    </p>
                   </div>
                 ))}
-                 <div className="mt-4 flex justify-between space-x-2">
+                <div className="mt-6 grid grid-cols-3 gap-3">
                   <button 
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                    className="col-span-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
                     onClick={() => handlePayment(tableNum)}
                   >
-                    Pay and Complete
+                    Pay
                   </button>
                   <button 
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                    className="col-span-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
                     onClick={() => handleCancel(tableNum)}
                   >
                     Cancel
                   </button>
                   <button 
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                    className="col-span-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                     onClick={() => handlePrintReceipt(tableNum)}
                   >
-                    Print Receipt
+                    Print
                   </button>
                 </div>
               </div>
@@ -211,15 +214,17 @@ function page() {
           })}
         </div>
       </div>
+
+      {/* Modals with enhanced styling */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-xl mb-4">Enter Customer Details</h2>
-            <form onSubmit={handleSubmitCustomerDetails}>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+            <h2 className="text-xl font-bold mb-4">Enter Customer Details</h2>
+            <form onSubmit={handleSubmitCustomerDetails} className="space-y-4">
               <input
                 type="text"
                 placeholder="Customer Name"
-                className="block w-full mb-2 p-2 border rounded"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={customerDetails.name}
                 onChange={(e) => setCustomerDetails(prev => ({...prev, name: e.target.value}))}
                 required
@@ -227,22 +232,22 @@ function page() {
               <input
                 type="tel"
                 placeholder="Phone Number"
-                className="block w-full mb-4 p-2 border rounded"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={customerDetails.phone}
                 onChange={(e) => setCustomerDetails(prev => ({...prev, phone: e.target.value}))}
                 required
               />
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-gray-200 rounded"
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                 >
                   Print Receipt
                 </button>
@@ -251,74 +256,49 @@ function page() {
           </div>
         </div>
       )}
+
+      {/* Payment Modal */}
       {showPaymentModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg w-96">
-            <h2 className="text-xl mb-4">Payment Details</h2>
-            <p className="mb-4 text-lg">
-              Total Amount: $
-              {groupedBillings[paymentDetails.tableNum].reduce(
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+            <h2 className="text-xl font-bold mb-4">Payment Details</h2>
+            <p className="text-lg mb-4">
+              Total Amount: ${groupedBillings[paymentDetails.tableNum].reduce(
                 (sum, order) => sum + order.totalPrice, 
                 0
               )}
             </p>
-            <form onSubmit={handlePaymentSubmit}>
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="cash"
-                    name="paymentMethod"
-                    value="Cash"
-                    onChange={(e) => setPaymentDetails(prev => ({
-                      ...prev, 
-                      method: e.target.value
-                    }))}
-                    required
-                    className="mr-2"
-                  />
-                  <label htmlFor="cash">Cash</label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="card"
-                    name="paymentMethod"
-                    value="Card"
-                    onChange={(e) => setPaymentDetails(prev => ({
-                      ...prev, 
-                      method: e.target.value
-                    }))}
-                    className="mr-2"
-                  />
-                  <label htmlFor="card">Card</label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="ewallet"
-                    name="paymentMethod"
-                    value="E-Wallet"
-                    onChange={(e) => setPaymentDetails(prev => ({
-                      ...prev, 
-                      method: e.target.value
-                    }))}
-                    className="mr-2"
-                  />
-                  <label htmlFor="ewallet">E-Wallet</label>
-                </div>
+            <form onSubmit={handlePaymentSubmit} className="space-y-4">
+              <div className="space-y-3">
+                {['Cash', 'Card', 'E-Wallet'].map((method) => (
+                  <div key={method} className="flex items-center p-3 border rounded-lg hover:bg-gray-50">
+                    <input
+                      type="radio"
+                      id={method.toLowerCase()}
+                      name="paymentMethod"
+                      value={method}
+                      onChange={(e) => setPaymentDetails(prev => ({
+                        ...prev, 
+                        method: e.target.value
+                      }))}
+                      required
+                      className="mr-3"
+                    />
+                    <label htmlFor={method.toLowerCase()}>{method}</label>
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-3 mt-6">
                 <button
                   type="button"
                   onClick={() => setShowPaymentModal(false)}
-                  className="px-4 py-2 bg-gray-200 rounded"
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-green-500 text-white rounded"
+                  className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
                 >
                   Confirm Payment
                 </button>
