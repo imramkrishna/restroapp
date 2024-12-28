@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       >
         <div className="min-h-screen flex">
           <Navbar />
-          <div className="flex-1 ml-[16rem] md:ml-[18rem] pt-16">
+          <div className="flex-1 ml-[2rem] md:ml-[2rem] pt-16">
             {children}
           </div>
         </div>
