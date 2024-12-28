@@ -164,130 +164,158 @@ function Page() {
 
 
   return (
-    <div>
-      {/*====================Setting up top titles of pos section==============================*/}
-      <div className="top-portion flex justify-between">
-        <div className="left font-bold text-xl mx-3">
-          <p>Point of Sale</p>
-        </div>
-        <div className="right m-auto">
-          <button className='border-2 mx-2 rounded-md bg-slate-100 px-1'>New</button>
-          <button className='border-2 mx-2 rounded-md bg-slate-100 px-1'>QR menu Orders</button>
-          <button className='border-2 mx-2 rounded-md bg-slate-100 px-1'>Drafts List</button>
-          <button className='border-2 mx-2 rounded-md bg-slate-100 px-1'>Table Orders</button>
+    <div className="p-4 md:p-6">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+          Point of Sale
+        </h1>
+        <div className="flex flex-wrap gap-2 justify-center">
+          <button className="px-4 py-2 border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200">
+            New
+          </button>
+          <button className="px-4 py-2 border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200">
+            QR menu Orders
+          </button>
+          <button className="px-4 py-2 border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200">
+            Drafts List
+          </button>
+          <button className="px-4 py-2 border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200">
+            Table Orders
+          </button>
         </div>
       </div>
 
-      <div className='point-of-sale m-4 lg:flex'>
-        {/*====================Setting up menu showing of pos section==============================*/}
-        <div className="menu w-full lg:w-1/2 border-2 border-e-slate-100 rounded-2xl overflow-auto">
-          <div className="searchbar">
-            <input type="text" placeholder="Search for items" className="bg-slate-100 w-1/4 border-2 border-e-slate-300 rounded-2xl p-1 my-2 mx-2" />
+      <div className="point-of-sale space-y-6 lg:space-y-0 lg:flex lg:gap-6">
+        {/* Menu Section */}
+        <div className="w-full lg:w-1/2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-gray-200">
+            <input 
+              type="text" 
+              placeholder="Search for items" 
+              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200" 
+            />
           </div>
-          {/**================Showing Items portion============================ */}
-          <div className="items-portion flex flex-wrap overflow-auto">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
             {menuItems.map(item => (
-              <div key={item._id} className="items w-5/12 border-2 border-e-slate-100 rounded-3xl m-2 px-3">
+              <div key={item._id} className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all duration-200">
                 {item.itemImage && (
                   <img 
                     src={item.itemImage} 
                     alt={item.itemName}
-                    className="w-full h-32 object-cover mb-2"
+                    className="w-full h-40 object-cover"
                   />
                 )}
-                <p className="text-xl font-medium">{item.itemName}</p>
-                <p className="my-1">Price: {item.itemPrice}</p>
-                <button 
-                  className="bg-green-500 rounded-xl p-2 my-1 text-stone-100" 
-                  onClick={() => additems(item.itemName, item.itemPrice)}
-                >
-                  Add
-                </button>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2">{item.itemName}</h3>
+                  <p className="text-gray-600 mb-3">${item.itemPrice}</p>
+                  <button 
+                    className="w-full py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-200"
+                    onClick={() => additems(item.itemName, item.itemPrice)}
+                  >
+                    Add to Order
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
         {/*====================Setting up Billing Portion of pos section==============================*/}
-        <div className="billing w-full lg:w-1/3 border-2 border-e-slate-100 rounded-2xl mx-2 min-h-screen overflow-auto">
-          <div className="top-portion h-1/4 border-b-2 border-e-slate-100 my-6 text-sm flex flex-col items-center justify-center space-y-4">
-            <div className="flex flex-row w-full lg:h-1/6">
-              <label className='my-1' htmlFor="table">
-                Select Table Number: 
+        <div className="billing w-full lg:w-1/3 bg-white rounded-xl shadow-lg min-h-screen overflow-hidden">
+          {/* Table Selection Section */}
+          <div className="p-6 border-b border-gray-200 space-y-4">
+            <div className="flex items-center justify-between gap-4">
+              <label className="text-sm font-medium text-gray-700" htmlFor="table">
+                Select Table Number:
               </label>
               <select
                 id="table"
-                className="border rounded-xl px-2 w-1/4 h-3/4"
+                className="w-1/2 p-2.5 text-gray-700 bg-gray-50 border border-gray-300 
+                          rounded-lg appearance-none cursor-pointer
+                          focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                          transition-all duration-200"
                 value={table}
                 onChange={(e) => setTable(e.target.value)}
               >
                 {Object.keys(billings).map((tableKey) => (
-                  <option key={tableKey} value={tableKey}>{tableKey}</option>
+                  <option key={tableKey} value={tableKey}>Table {tableKey}</option>
                 ))}
               </select>
             </div>
 
-            <div className="flex flex-col w-full m-auto">
-              <label htmlFor="name">Customer's Name:</label>
+            <div className="flex gap-3">
               <input
-                className="rounded-xl border p-2 w-11/12 m-auto"
-                type="text"
-                placeholder="Customer's Name"
-                id="name"
-                value={customer}
-                onChange={(e) => setCustomer(e.target.value)}
-              />
-            </div>
-            
-            <div className="flex flex-col w-full m-auto">
-              <label htmlFor="phone">Customer's Phone:</label>
-              <input
-                className="rounded-xl border p-2 w-11/12 m-auto"
-                type="text"
-                placeholder="Customer's Phone"
-                id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-
-              />
-            </div>
-
-            <div className="add-table flex flex-row w-full m-auto">
-              <input
-                className="rounded-xl border p-1 w-3/4"
+                className="flex-1 p-3 bg-gray-50 border border-gray-300 rounded-lg
+                          placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
                 type="text"
                 placeholder="New Table Number"
                 value={newTable}
                 onChange={(e) => setNewTable(e.target.value)}
               />
-              <button className="ml-2 bg-blue-500 text-white rounded px-2" onClick={addTable}>Add Table</button>
+              <button 
+                className="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg
+                          hover:bg-blue-600 transition-colors shadow-sm"
+                onClick={addTable}
+              >
+                Add
+              </button>
             </div>
           </div>
 
-          <div className="middle-portion h-4/6 overflow-auto flex flex-col">
+          {/* Order Items Section */}
+          <div className="flex-1 overflow-auto px-4 py-2">
             {billings[table].items.map((item, index) => (
-              <div key={index} className="item flex justify-around my-3 border-2 h-1/6 border-e-slate-100 p-3">
-                <div><p>{index + 1}. {item.name} x {billings[table].quantities[item.name]}</p></div>
-                <div><p>{item.price * billings[table].quantities[item.name]}</p></div>
-                <div className="justify-center mt-2">
-                  <button className="h-7 mx-3 bg-blue-500 text-white rounded px-2" onClick={() => incrementQuantity(item.name, item.price)}>+</button>
-                  <button className="h-7 mx-3 bg-red-500 text-white rounded px-2" onClick={() => decrementQuantity(item.name, item.price)}>-</button>
-                  <button className="h-7 mx-3 bg-red-700 text-white rounded px-2" onClick={() => deleteItem(item.name, item.price)}>Remove</button>
+              <div key={index} 
+                className="flex items-center justify-between p-4 mb-3 bg-gray-50 
+                          rounded-lg border border-gray-100 hover:shadow-md 
+                          transition-all duration-200"
+              >
+                <div className="flex-1">
+                  <p className="font-medium">{index + 1}. {item.name} x {billings[table].quantities[item.name]}</p>
+                  <p className="text-gray-600">${item.price * billings[table].quantities[item.name]}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button 
+                    className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    onClick={() => incrementQuantity(item.name, item.price)}
+                  >+</button>
+                  <button 
+                    className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                    onClick={() => decrementQuantity(item.name, item.price)}
+                  >-</button>
+                  <button 
+                    className="p-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors"
+                    onClick={() => deleteItem(item.name, item.price)}
+                  >×</button>
                 </div>
               </div>
             ))}
-            <div className="total-price mt-auto">
-              <p>Total Price: ${billings[table].totalPrice}</p>
+            <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
+              <p className="text-xl font-bold text-right">Total: ${billings[table].totalPrice}</p>
             </div>
           </div>
-          <div className="bottom-portion h-1/6 border-t-2 border-e-slate-100">
-            <div className="top flex justify-between">
-              <button className="draft w-1/6 border-2 mx-2 border-e-slate-100 rounded-xl my-3">Draft</button>
-              <button className="send-to-kitchen w-8/12 border-2 mx-2 border-e-slate-100 rounded-xl my-3" onClick={sendToKitchen} >Send to Kitchen</button>
+
+          {/* Action Buttons */}
+          <div className="border-t border-gray-200 p-4 space-y-3 bg-white">
+            <div className="grid grid-cols-2 gap-3">
+              <button className="p-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                Draft
+              </button>
+              <button 
+                className="p-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                onClick={sendToKitchen}
+              >
+                Send to Kitchen
+              </button>
             </div>
-            <div className="bottom w-4/5 mx-8 my-3 bg-green-500 text-center rounded-xl">
-              <button className='receipt h-8' onClick={generatePDF}>Create Receipt and Pay</button>
-            </div>
+            <button 
+              className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              onClick={generatePDF}
+            >
+              Create Receipt and Pay
+            </button>
           </div>
         </div>
       </div>
