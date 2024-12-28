@@ -200,33 +200,67 @@ function Navbar() {
                 )}
 
                 {/* =============================HORIZONTAL NAVBAR========================== */}
-                <div className="max-w-full mx-36 md:mx-72 h-14 bg-white border-b-2 border-e-white flex md:justify-between">
-                    <div className="search py-3 mx-3" onClick={finddropdown}>
-                        <input className='rounded-full h-9 bg-slate-200 w-60' type="text" placeholder="     Search.." value="   Search"/>
+                <div className="fixed top-0 right-0 w-[calc(100%-16rem)] md:w-[calc(100%-18rem)] h-16 
+                                bg-white border-b border-gray-200 flex justify-between items-center 
+                                px-4 md:px-6 lg:px-8 z-40">
+                    <div className="search relative flex-1 max-w-md" onClick={finddropdown}>
+                        <input 
+                            className="w-full h-10 pl-4 pr-10 bg-gray-50 border border-gray-200 
+                                        rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 
+                                        transition-all duration-200 placeholder-gray-400" 
+                            type="text" 
+                            placeholder="Search.." 
+                            value="Search"
+                        />
                         {searchdropdown && (
-                                    <div className="dropdown-menu bg-white shadow-lg rounded-lg mt-2 absolute w-64">
-                                        <Link href="/Home"><div className="dropdown-item px-4 py-2">Dashboard</div></Link>
-                                        <Link href="/Kitchen"><div className="dropdown-item px-4 py-2">Kitchen</div>    </Link>
-                                        <Link href="/POS"><div className="dropdown-item px-4 py-2">POS</div></Link>
-                                        <Link href="/Orders"><div className="dropdown-item px-4 py-2">Orders</div></Link>
-                                        <Link href="/Reservation"><div className="dropdown-item px-4 py-2">Reservations</div></Link>
-                                        <Link href="/Menu"><div className="dropdown-item px-4 py-2">Menu Items</div></Link>
-                                        <Link href="/Invoices"><div className="dropdown-item px-4 py-2">Invoices</div></Link>
-                                        <Link href="/Feedbacks"><div className="dropdown-item px-4 py-2">Feedbacks</div></Link>
-                                    </div>
-                                )}
+                            <div className="dropdown-menu absolute top-12 left-0 w-full bg-white 
+                                            shadow-lg rounded-lg border border-gray-100 overflow-hidden z-50">
+                                <Link href="/Home">
+                                    <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Dashboard</div>
+                                </Link>
+                                <Link href="/Kitchen">
+                                    <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Kitchen</div>
+                                </Link>
+                                <Link href="/POS">
+                                    <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">POS</div>
+                                </Link>
+                                <Link href="/Orders">
+                                    <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Orders</div>
+                                </Link>
+                                <Link href="/Reservation">
+                                    <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Reservations</div>
+                                </Link>
+                                <Link href="/Menu">
+                                    <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Menu Items</div>
+                                </Link>
+                                <Link href="/Invoices">
+                                    <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Invoices</div>
+                                </Link>
+                                <Link href="/Feedbacks">
+                                    <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Feedbacks</div>
+                                </Link>
+                            </div>
+                        )}
                     </div>
-                    <div className="bg-slate-200 rounded-full h-9 my-2">
-                        <div className="flex">
-                            <FontAwesomeIcon className='border-4 rounded-full h-6 w-6' icon={faUser} />
-                            <span className='py-1 px-1' onClick={profiledropdown} >
+
+                    <div className="relative ml-4">
+                        <div className="flex items-center bg-gray-50 rounded-lg px-3 py-2 
+                                        hover:bg-gray-100 transition-colors cursor-pointer">
+                            <FontAwesomeIcon 
+                                className="h-6 w-6 rounded-full border-2 border-gray-300 p-1" 
+                                icon={faUser} 
+                            />
+                            <span className="ml-2 font-medium" onClick={profiledropdown}>
                                 UserName
                                 {dropdown && (
-                                    <div className="dropdown-menu bg-white shadow-lg rounded-lg mt-2 absolute">
-                                        <Link href="/Home"><div className="dropdown-item px-4 py-2">Profile</div></Link>
-                                        <div className="dropdown-item px-4 py-2">My devices</div>
-                                        <div className="dropdown-item px-4 py-2">Support</div>
-                                        <div className="dropdown-item px-4 py-2">Logout</div>
+                                    <div className="dropdown-menu absolute top-12 right-0 w-48 bg-white 
+                                                    shadow-lg rounded-lg border border-gray-100 overflow-hidden z-50">
+                                        <Link href="/Home">
+                                            <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Profile</div>
+                                        </Link>
+                                        <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">My devices</div>
+                                        <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Support</div>
+                                        <div className="dropdown-item px-4 py-2.5 hover:bg-gray-50 transition-colors">Logout</div>
                                     </div>
                                 )}
                             </span>
