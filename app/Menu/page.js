@@ -64,7 +64,7 @@ export default function page() {
       <div className="flex items-center gap-4 mb-4">
         <h1 className="text-xl font-bold">Menu Items</h1>
         <button
-          className="px-4 py-2 bg-green-500 text-white rounded"
+          className="px-4 py-2 bg-slate-100 text-black rounded-xl"
           onClick={() => setShowModal(true)}
         >
           +Add
