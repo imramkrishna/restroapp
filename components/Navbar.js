@@ -204,8 +204,7 @@ function Navbar() {
                 <div className="fixed top-0 right-0 w-[calc(100%-16rem)] md:w-[calc(100%-18rem)] h-16 
                                 bg-white border-b border-gray-200 flex justify-between items-center 
                                 px-4 md:px-6 lg:px-8 z-40">
-                    {/* Hide search on mobile, show on md and up */}
-                    <div className="search relative hidden md:flex flex-1 max-w-md" onClick={finddropdown}>
+                    <div className="search relative flex-1 max-w-md hidden" onClick={finddropdown}>
                         <input 
                             className="w-full h-10 pl-4 pr-10 bg-gray-50 border border-gray-200 
                                         rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 
